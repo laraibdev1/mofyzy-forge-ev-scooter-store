@@ -1,72 +1,32 @@
-"use client"
-
-import { useEffect, useRef } from "react"
 import Link from "next/link"
 import Image from "next/image"
-import { ArrowRight, ChevronRight, Star, Truck, Shield, Leaf, Zap, Battery } from "lucide-react"
-import { motion } from "framer-motion"
+import { ArrowRight, ChevronRight, Star, Truck, Shield, Clock, Leaf, Zap, Battery } from 'lucide-react'
+
 import { Button } from "@/components/ui/button"
+import { Card, CardContent } from "@/components/ui/card"
 import ProductCard from "@/components/product-card"
 import { featuredProducts } from "@/lib/products"
 
 export default function Home() {
-  // Refs for scroll animations
-  const featuresRef = useRef<HTMLDivElement>(null)
-  const productsRef = useRef<HTMLDivElement>(null)
-  const testimonialsRef = useRef<HTMLDivElement>(null)
-
-  // Handle scroll animations
-  useEffect(() => {
-    const observer = new IntersectionObserver(
-      (entries) => {
-        entries.forEach((entry) => {
-          if (entry.isIntersecting) {
-            entry.target.classList.add("visible")
-          }
-        })
-      },
-      { threshold: 0.1 },
-    )
-
-    const sections = document.querySelectorAll(".section-fade-in")
-    sections.forEach((section) => {
-      observer.observe(section)
-    })
-
-    return () => {
-      sections.forEach((section) => {
-        observer.unobserve(section)
-      })
-    }
-  }, [])
-
   return (
     <>
       {/* Hero Section */}
       <section className="w-full py-16 md:py-24 lg:py-32 overflow-hidden bg-gradient-to-b from-eco-50 to-white dark:from-gray-950 dark:to-gray-900">
         <div className="container px-4 md:px-6">
           <div className="grid gap-6 lg:grid-cols-2 lg:gap-12 items-center">
-            <motion.div
-              className="flex flex-col justify-center space-y-4"
-              initial={{ opacity: 0, x: -50 }}
-              animate={{ opacity: 1, x: 0 }}
-              transition={{ duration: 0.5 }}
-            >
+            <div className="flex flex-col justify-center space-y-4">
               <div className="inline-flex items-center rounded-full border border-eco-200 bg-eco-100 px-3 py-1 text-sm text-eco-700 mb-4">
                 <Leaf className="mr-1 h-3.5 w-3.5" />
                 <span>Eco-friendly transportation</span>
               </div>
               <div className="space-y-2">
-                <h1 className="text-6xl font-bold tracking-tighter sm:text-12xl xl:text-6xl/none">
+                <h1 className="text-4xl font-bold tracking-tighter sm:text-5xl xl:text-6xl/none">
                   Ride the <span className="text-gradient">Future</span> with Electric Scooters
                 </h1>
-                {/* <br /> */}
-
-                <p className="max-w-[600px] text-gray-500 md:text-2xl">
+                <p className="max-w-[600px] text-gray-500 md:text-xl">
                   Discover our premium range of electric scooters that combine style, performance, and sustainability.
                 </p>
               </div>
-              <br />
               <div className="flex flex-col gap-2 min-[400px]:flex-row">
                 <Link href="/products">
                   <Button size="lg" className="px-8 rounded-full bg-eco-gradient">
@@ -75,33 +35,24 @@ export default function Home() {
                   </Button>
                 </Link>
                 <Link href="/about">
-                  <Button
-                    size="lg"
-                    variant="outline"
-                    className="px-8 rounded-full border-eco-200 text-eco-700 hover:bg-eco-50"
-                  >
+                  <Button size="lg" variant="outline" className="px-8 rounded-full border-eco-200 text-eco-700 hover:bg-eco-50">
                     Learn More
                   </Button>
                 </Link>
               </div>
-            </motion.div>
-            <motion.div
-              className="flex justify-center"
-              initial={{ opacity: 0, scale: 0.9 }}
-              animate={{ opacity: 1, scale: 1 }}
-              transition={{ duration: 0.5, delay: 0.2 }}
-            >
-             <div className="relative">
-  <div className="absolute -inset-4 rounded-full bg-eco-radial animate-pulse-glow"></div>
-  <Image
-    src="/aman.png"
-    width={550}
-    height={550}
-    alt="Electric Scooter"
-    className="relative z-10 rounded-full object-cover"
-  />
-</div>
-            </motion.div>
+            </div>
+            <div className="flex justify-center">
+              <div className="relative">
+                <div className="absolute -inset-4 rounded-full bg-eco-radial"></div>
+                <Image
+                  src="/placeholder.svg?height=550&width=550"
+                  width={550}
+                  height={550}
+                  alt="Electric Scooter"
+                  className="relative z-10 rounded-xl object-cover"
+                />
+              </div>
+            </div>
           </div>
         </div>
       </section>
@@ -110,48 +61,28 @@ export default function Home() {
       <section className="w-full py-12 bg-eco-900 text-white">
         <div className="container px-4 md:px-6">
           <div className="grid grid-cols-2 md:grid-cols-4 gap-4 md:gap-8 text-center">
-            <motion.div
-              className="space-y-2"
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.3, delay: 0.1 }}
-            >
+            <div className="space-y-2">
               <div className="text-3xl md:text-4xl font-bold text-eco-300">25+</div>
               <div className="text-sm md:text-base text-eco-100">Mile Range</div>
-            </motion.div>
-            <motion.div
-              className="space-y-2"
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.3, delay: 0.2 }}
-            >
+            </div>
+            <div className="space-y-2">
               <div className="text-3xl md:text-4xl font-bold text-eco-300">20</div>
               <div className="text-sm md:text-base text-eco-100">MPH Speed</div>
-            </motion.div>
-            <motion.div
-              className="space-y-2"
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.3, delay: 0.3 }}
-            >
+            </div>
+            <div className="space-y-2">
               <div className="text-3xl md:text-4xl font-bold text-eco-300">2yr</div>
               <div className="text-sm md:text-base text-eco-100">Warranty</div>
-            </motion.div>
-            <motion.div
-              className="space-y-2"
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.3, delay: 0.4 }}
-            >
+            </div>
+            <div className="space-y-2">
               <div className="text-3xl md:text-4xl font-bold text-eco-300">5k+</div>
               <div className="text-sm md:text-base text-eco-100">Happy Riders</div>
-            </motion.div>
+            </div>
           </div>
         </div>
       </section>
 
       {/* Features Section */}
-      <section ref={featuresRef} className="section-fade-in w-full py-16 md:py-24 lg:py-32">
+      <section className="section-fade-in w-full py-16 md:py-24 lg:py-32">
         <div className="container px-4 md:px-6">
           <div className="flex flex-col items-center justify-center space-y-4 text-center">
             <div className="inline-flex items-center rounded-full border border-eco-200 bg-eco-100 px-3 py-1 text-sm text-eco-700 mb-2">
@@ -201,7 +132,7 @@ export default function Home() {
       </section>
 
       {/* Featured Products Section */}
-      <section ref={productsRef} className="section-fade-in w-full py-16 md:py-24 lg:py-32 bg-eco-radial">
+      <section className="section-fade-in w-full py-16 md:py-24 lg:py-32 bg-eco-radial">
         <div className="container px-4 md:px-6">
           <div className="flex flex-col items-center justify-center space-y-4 text-center">
             <div className="inline-flex items-center rounded-full border border-eco-200 bg-eco-100 px-3 py-1 text-sm text-eco-700 mb-2">
@@ -216,15 +147,10 @@ export default function Home() {
             </div>
           </div>
           <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-4 mt-12">
-            {featuredProducts.map((product, index) => (
-              <motion.div
-                key={product.id}
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.3, delay: index * 0.1 }}
-              >
+            {featuredProducts.map((product) => (
+              <div key={product.id}>
                 <ProductCard product={product} />
-              </motion.div>
+              </div>
             ))}
           </div>
           <div className="flex justify-center mt-12">
@@ -239,7 +165,7 @@ export default function Home() {
       </section>
 
       {/* Testimonials Section */}
-      <section ref={testimonialsRef} className="section-fade-in w-full py-16 md:py-24 lg:py-32">
+      <section className="section-fade-in w-full py-16 md:py-24 lg:py-32">
         <div className="container px-4 md:px-6">
           <div className="flex flex-col items-center justify-center space-y-4 text-center">
             <div className="inline-flex items-center rounded-full border border-eco-200 bg-eco-100 px-3 py-1 text-sm text-eco-700 mb-2">
@@ -275,13 +201,7 @@ export default function Home() {
                   "I love how portable the Commuter Elite is. I can easily take it on public transport when needed.",
               },
             ].map((testimonial, index) => (
-              <motion.div
-                key={index}
-                className="eco-card flex flex-col justify-center space-y-4"
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.3, delay: index * 0.1 }}
-              >
+              <div key={index} className="eco-card flex flex-col justify-center space-y-4">
                 <div className="flex items-center space-x-2">
                   {Array(5)
                     .fill(null)
@@ -292,12 +212,12 @@ export default function Home() {
                 <p className="text-gray-600 italic">"{testimonial.quote}"</p>
                 <div className="flex items-center space-x-3 pt-4">
                   <div className="h-10 w-10 rounded-full overflow-hidden">
-                    <Image
-                      src={testimonial.avatar || "/placeholder.svg"}
-                      alt={testimonial.name}
-                      width={40}
+                    <Image 
+                      src={testimonial.avatar || "/placeholder.svg"} 
+                      alt={testimonial.name} 
+                      width={40} 
                       height={40}
-                      className="h-full w-full object-cover"
+                      className="h-full w-full object-cover" 
                     />
                   </div>
                   <div>
@@ -305,7 +225,7 @@ export default function Home() {
                     <p className="text-xs text-gray-500">Verified Customer</p>
                   </div>
                 </div>
-              </motion.div>
+              </div>
             ))}
           </div>
         </div>
@@ -315,33 +235,23 @@ export default function Home() {
       <section className="w-full py-16 md:py-24 lg:py-32 bg-eco-gradient text-white">
         <div className="container px-4 md:px-6">
           <div className="flex flex-col items-center justify-center space-y-4 text-center">
-            <motion.div
-              className="space-y-2"
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.5 }}
-            >
+            <div className="space-y-2">
               <h2 className="text-3xl font-bold tracking-tighter sm:text-4xl md:text-5xl">Ready to Ride Electric?</h2>
               <p className="max-w-[600px] text-white/80 md:text-xl/relaxed">
                 Join thousands of satisfied customers who have made the switch to eco-friendly urban transportation.
               </p>
-            </motion.div>
-            <motion.div
-              initial={{ opacity: 0, scale: 0.9 }}
-              animate={{ opacity: 1, scale: 1 }}
-              transition={{ duration: 0.5, delay: 0.2 }}
-            >
+            </div>
+            <div>
               <Link href="/products">
                 <Button size="lg" className="px-8 rounded-full bg-white text-eco-700 hover:bg-white/90">
                   Shop Now
                   <ArrowRight className="ml-2 h-4 w-4" />
                 </Button>
               </Link>
-            </motion.div>
+            </div>
           </div>
         </div>
       </section>
     </>
   )
 }
-

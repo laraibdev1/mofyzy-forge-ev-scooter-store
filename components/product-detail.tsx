@@ -1,62 +1,48 @@
 "use client"
 
-import { useParams } from "next/navigation"
-import { useEffect, useState } from "react"
-import { products } from "@/lib/products"
+import { useState } from "react"
 import Image from "next/image"
 import Link from "next/link"
+import { motion, AnimatePresence } from "framer-motion"
 import { Button } from "@/components/ui/button"
 import { Separator } from "@/components/ui/separator"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
-import { Star, Truck, ShieldCheck, ArrowLeft, Heart, Share2 } from "lucide-react"
+import {
+  Star,
+  Truck,
+  ShieldCheck,
+  ArrowLeft,
+  Minus,
+  Plus,
+  Heart,
+  Share2,
+  Battery,
+  Zap,
+  Award,
+  ShoppingCart,
+} from "lucide-react"
 import ProductCard from "@/components/product-card"
 import type { Product } from "@/lib/types"
 
-export default function ProductPage() {
-  const params = useParams()
-  const id = params.id as string
-  const [product, setProduct] = useState<Product | null>(null)
-  const [relatedProducts, setRelatedProducts] = useState<Product[]>([])
-  const [isLoading, setIsLoading] = useState(true)
+interface ProductDetailProps {
+  product: Product
+  relatedProducts: Product[]
+}
 
-  useEffect(() => {
-    // Find the product and related products
-    const foundProduct = products.find((p) => p.id === id)
+export default function ProductDetail({ product, relatedProducts }: ProductDetailProps) {
+  const [quantity, setQuantity] = useState(1)
+  const [activeImage, setActiveImage] = useState(0)
 
-    if (foundProduct) {
-      setProduct(foundProduct)
-      // Get related products (excluding current product)
-      const related = products.filter((p) => p.id !== id).slice(0, 4)
-      setRelatedProducts(related)
-    }
+  const incrementQuantity = () => setQuantity((prev) => prev + 1)
+  const decrementQuantity = () => setQuantity((prev) => (prev > 1 ? prev - 1 : 1))
 
-    setIsLoading(false)
-  }, [id])
-
-  if (isLoading) {
-    return (
-      <div className="container px-4 py-8 md:py-12 flex justify-center items-center min-h-[60vh]">
-        <div className="text-center">
-          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-eco-600 mx-auto"></div>
-          <p className="mt-4 text-gray-500">Loading product...</p>
-        </div>
-      </div>
-    )
-  }
-
-  if (!product) {
-    return (
-      <div className="container px-4 py-8 md:py-12 flex justify-center items-center min-h-[60vh]">
-        <div className="text-center">
-          <h2 className="text-2xl font-bold">Product Not Found</h2>
-          <p className="mt-2 text-gray-500">The product you're looking for doesn't exist.</p>
-          <Link href="/products">
-            <Button className="mt-6 rounded-full bg-eco-gradient">Back to Products</Button>
-          </Link>
-        </div>
-      </div>
-    )
-  }
+  // Product images (in a real app, these would come from the product data)
+  const productImages = [
+    product.image,
+    "/placeholder.svg?height=600&width=600",
+    "/placeholder.svg?height=600&width=600",
+    "/placeholder.svg?height=600&width=600",
+  ]
 
   return (
     <div className="container px-4 py-8 md:py-12">
@@ -70,35 +56,61 @@ export default function ProductPage() {
       <div className="grid md:grid-cols-2 gap-8 lg:gap-12">
         {/* Product Images */}
         <div className="space-y-4">
-          <div className="overflow-hidden rounded-2xl border bg-white">
-            <div className="relative aspect-square">
-              <Image
-                src={product.image || "/placeholder.svg"}
-                alt={product.name}
-                fill
-                className="h-full w-full object-cover"
-              />
-            </div>
-          </div>
-          <div className="grid grid-cols-4 gap-4">
-            {[1, 2, 3, 4].map((i) => (
-              <div key={i} className="overflow-hidden rounded-lg border bg-white">
+          <motion.div
+            className="overflow-hidden rounded-2xl border bg-white"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ duration: 0.5 }}
+          >
+            <AnimatePresence mode="wait">
+              <motion.div
+                key={activeImage}
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                exit={{ opacity: 0 }}
+                transition={{ duration: 0.3 }}
+                className="relative aspect-square"
+              >
                 <Image
-                  src={product.image || "/placeholder.svg"}
-                  alt={`${product.name} view ${i}`}
+                  src={productImages[activeImage] || "/placeholder.svg"}
+                  alt={product.name}
+                  fill
+                  className="h-full w-full object-cover"
+                />
+              </motion.div>
+            </AnimatePresence>
+          </motion.div>
+          <div className="grid grid-cols-4 gap-4">
+            {productImages.map((image, i) => (
+              <motion.div
+                key={i}
+                className={`overflow-hidden rounded-lg border cursor-pointer ${activeImage === i ? "ring-2 ring-eco-500" : ""}`}
+                whileHover={{ scale: 1.05 }}
+                transition={{ type: "spring", stiffness: 400, damping: 17 }}
+                onClick={() => setActiveImage(i)}
+              >
+                <Image
+                  src={image || "/placeholder.svg"}
+                  alt={`${product.name} view ${i + 1}`}
                   width={150}
                   height={150}
                   className="h-full w-full object-cover"
                 />
-              </div>
+              </motion.div>
             ))}
           </div>
         </div>
 
         {/* Product Details */}
-        <div className="flex flex-col space-y-6">
+        <motion.div
+          className="flex flex-col space-y-6"
+          initial={{ opacity: 0, x: 20 }}
+          animate={{ opacity: 1, x: 0 }}
+          transition={{ duration: 0.5, delay: 0.2 }}
+        >
           <div className="space-y-2">
             <div className="inline-flex items-center rounded-full border border-eco-200 bg-eco-100 px-3 py-1 text-sm text-eco-700 mb-2">
+              <Zap className="mr-1 h-3.5 w-3.5" />
               <span>{product.category.charAt(0).toUpperCase() + product.category.slice(1)} Scooter</span>
             </div>
             <h1 className="text-3xl font-bold">{product.name}</h1>
@@ -138,6 +150,37 @@ export default function ProductPage() {
           <div className="space-y-4">
             <p className="text-gray-700">{product.description}</p>
 
+            <div className="grid grid-cols-2 gap-4">
+              <div className="flex items-center space-x-2 p-3 rounded-lg bg-eco-50 border border-eco-100">
+                <Battery className="h-5 w-5 text-eco-600" />
+                <div>
+                  <div className="text-sm font-medium">25+ Mile Range</div>
+                  <div className="text-xs text-gray-500">Long-lasting battery</div>
+                </div>
+              </div>
+              <div className="flex items-center space-x-2 p-3 rounded-lg bg-eco-50 border border-eco-100">
+                <Zap className="h-5 w-5 text-eco-600" />
+                <div>
+                  <div className="text-sm font-medium">20 MPH Speed</div>
+                  <div className="text-xs text-gray-500">Powerful motor</div>
+                </div>
+              </div>
+              <div className="flex items-center space-x-2 p-3 rounded-lg bg-eco-50 border border-eco-100">
+                <Award className="h-5 w-5 text-eco-600" />
+                <div>
+                  <div className="text-sm font-medium">Premium Quality</div>
+                  <div className="text-xs text-gray-500">Durable materials</div>
+                </div>
+              </div>
+              <div className="flex items-center space-x-2 p-3 rounded-lg bg-eco-50 border border-eco-100">
+                <ShieldCheck className="h-5 w-5 text-eco-600" />
+                <div>
+                  <div className="text-sm font-medium">2-Year Warranty</div>
+                  <div className="text-xs text-gray-500">Peace of mind</div>
+                </div>
+              </div>
+            </div>
+
             <div className="space-y-2 mt-4">
               <div className="flex items-center space-x-2 text-sm">
                 <Truck className="h-4 w-4 text-eco-600" />
@@ -153,10 +196,31 @@ export default function ProductPage() {
           <Separator />
 
           <div className="space-y-4">
+            <div className="flex items-center space-x-2">
+              <Button
+                variant="outline"
+                size="icon"
+                className="rounded-full border-eco-200 text-eco-700 hover:bg-eco-50"
+                onClick={decrementQuantity}
+              >
+                <Minus className="h-4 w-4" />
+              </Button>
+              <span className="w-12 text-center">{quantity}</span>
+              <Button
+                variant="outline"
+                size="icon"
+                className="rounded-full border-eco-200 text-eco-700 hover:bg-eco-50"
+                onClick={incrementQuantity}
+              >
+                <Plus className="h-4 w-4" />
+              </Button>
+            </div>
+
             <div className="flex flex-col sm:flex-row gap-4">
-              <Link href="/cart">
-                <Button className="sm:flex-1 rounded-full bg-eco-gradient">Add to Cart</Button>
-              </Link>
+              <Button className="sm:flex-1 rounded-full bg-eco-gradient">
+                <ShoppingCart className="mr-2 h-4 w-4" />
+                Add to Cart
+              </Button>
               <Button
                 variant="outline"
                 size="icon"
@@ -173,7 +237,7 @@ export default function ProductPage() {
               </Button>
             </div>
           </div>
-        </div>
+        </motion.div>
       </div>
 
       {/* Product Tabs */}
@@ -199,7 +263,7 @@ export default function ProductPage() {
               Reviews
             </TabsTrigger>
           </TabsList>
-          <TabsContent value="description" className="p-6 border rounded-2xl mt-4">
+          <TabsContent value="description" className="p-6 border rounded-2xl mt-4 animate-fade-in">
             <div className="space-y-4">
               <h3 className="text-lg font-medium">Product Description</h3>
               <p>
@@ -214,7 +278,7 @@ export default function ProductPage() {
               </p>
             </div>
           </TabsContent>
-          <TabsContent value="specifications" className="p-6 border rounded-2xl mt-4">
+          <TabsContent value="specifications" className="p-6 border rounded-2xl mt-4 animate-fade-in">
             <div className="space-y-4">
               <h3 className="text-lg font-medium">Technical Specifications</h3>
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -257,7 +321,7 @@ export default function ProductPage() {
               </div>
             </div>
           </TabsContent>
-          <TabsContent value="reviews" className="p-6 border rounded-2xl mt-4">
+          <TabsContent value="reviews" className="p-6 border rounded-2xl mt-4 animate-fade-in">
             <div className="space-y-6">
               <h3 className="text-lg font-medium">Customer Reviews</h3>
 
@@ -333,7 +397,13 @@ export default function ProductPage() {
                       "I love how portable this scooter is. I can easily take it on public transport when needed.",
                   },
                 ].map((review, index) => (
-                  <div key={index} className="space-y-2 p-4 rounded-xl border hover:border-eco-200 transition-colors">
+                  <motion.div
+                    key={index}
+                    className="space-y-2 p-4 rounded-xl border hover:border-eco-200 transition-colors"
+                    initial={{ opacity: 0, y: 10 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ duration: 0.3, delay: index * 0.1 }}
+                  >
                     <div className="flex items-center space-x-3">
                       <div className="h-10 w-10 rounded-full overflow-hidden">
                         <Image
@@ -360,7 +430,7 @@ export default function ProductPage() {
                         ))}
                     </div>
                     <p className="text-gray-700">{review.comment}</p>
-                  </div>
+                  </motion.div>
                 ))}
               </div>
 
@@ -382,10 +452,15 @@ export default function ProductPage() {
           <h2 className="text-2xl font-bold">You May Also Like</h2>
         </div>
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-          {relatedProducts.map((product) => (
-            <div key={product.id}>
+          {relatedProducts.map((product, index) => (
+            <motion.div
+              key={product.id}
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.3, delay: index * 0.1 }}
+            >
               <ProductCard product={product} />
-            </div>
+            </motion.div>
           ))}
         </div>
       </div>
