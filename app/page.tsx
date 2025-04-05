@@ -1,9 +1,8 @@
 import Link from "next/link"
 import Image from "next/image"
-import { ArrowRight, ChevronRight, Star, Truck, Shield, Clock, Leaf, Zap, Battery } from 'lucide-react'
+import { ArrowRight, ChevronRight, Star, Truck, Shield, Leaf, Zap, Battery } from "lucide-react"
 
 import { Button } from "@/components/ui/button"
-import { Card, CardContent } from "@/components/ui/card"
 import ProductCard from "@/components/product-card"
 import { featuredProducts } from "@/lib/products"
 
@@ -35,24 +34,31 @@ export default function Home() {
                   </Button>
                 </Link>
                 <Link href="/about">
-                  <Button size="lg" variant="outline" className="px-8 rounded-full border-eco-200 text-eco-700 hover:bg-eco-50">
+                  <Button
+                    size="lg"
+                    variant="outline"
+                    className="px-8 rounded-full border-eco-200 text-eco-700 hover:bg-eco-50"
+                  >
                     Learn More
                   </Button>
                 </Link>
               </div>
             </div>
             <div className="flex justify-center">
-              <div className="relative">
-                <div className="absolute -inset-4 rounded-full bg-eco-radial"></div>
-                <Image
-                  src="/placeholder.svg?height=550&width=550"
-                  width={550}
-                  height={550}
-                  alt="Electric Scooter"
-                  className="relative z-10 rounded-xl object-cover"
-                />
+            <div className="flex justify-center">
               </div>
-            </div>
+  <div className="relative">
+    <div className="absolute -inset-4 rounded-full bg-eco-radial"></div>
+    <Image
+      src="/aman.png"
+      width={550}
+      height={550}
+      alt="Owner"
+      className="relative z-10 rounded-full object-cover"
+    />
+  </div>
+</div>
+
           </div>
         </div>
       </section>
@@ -82,7 +88,7 @@ export default function Home() {
       </section>
 
       {/* Features Section */}
-      <section className="section-fade-in w-full py-16 md:py-24 lg:py-32">
+      <section className="w-full py-16 md:py-24 lg:py-32">
         <div className="container px-4 md:px-6">
           <div className="flex flex-col items-center justify-center space-y-4 text-center">
             <div className="inline-flex items-center rounded-full border border-eco-200 bg-eco-100 px-3 py-1 text-sm text-eco-700 mb-2">
@@ -132,7 +138,7 @@ export default function Home() {
       </section>
 
       {/* Featured Products Section */}
-      <section className="section-fade-in w-full py-16 md:py-24 lg:py-32 bg-eco-radial">
+      <section className="w-full py-16 md:py-24 lg:py-32 bg-eco-radial">
         <div className="container px-4 md:px-6">
           <div className="flex flex-col items-center justify-center space-y-4 text-center">
             <div className="inline-flex items-center rounded-full border border-eco-200 bg-eco-100 px-3 py-1 text-sm text-eco-700 mb-2">
@@ -165,7 +171,7 @@ export default function Home() {
       </section>
 
       {/* Testimonials Section */}
-      <section className="section-fade-in w-full py-16 md:py-24 lg:py-32">
+      <section className="w-full py-16 md:py-24 lg:py-32">
         <div className="container px-4 md:px-6">
           <div className="flex flex-col items-center justify-center space-y-4 text-center">
             <div className="inline-flex items-center rounded-full border border-eco-200 bg-eco-100 px-3 py-1 text-sm text-eco-700 mb-2">
@@ -212,12 +218,12 @@ export default function Home() {
                 <p className="text-gray-600 italic">"{testimonial.quote}"</p>
                 <div className="flex items-center space-x-3 pt-4">
                   <div className="h-10 w-10 rounded-full overflow-hidden">
-                    <Image 
-                      src={testimonial.avatar || "/placeholder.svg"} 
-                      alt={testimonial.name} 
-                      width={40} 
+                    <Image
+                      src={testimonial.avatar || "/placeholder.svg"}
+                      alt={testimonial.name}
+                      width={40}
                       height={40}
-                      className="h-full w-full object-cover" 
+                      className="h-full w-full object-cover"
                     />
                   </div>
                   <div>
@@ -255,3 +261,4 @@ export default function Home() {
     </>
   )
 }
+

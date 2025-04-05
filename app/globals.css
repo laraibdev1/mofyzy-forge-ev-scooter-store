@@ -85,13 +85,8 @@
     @apply opacity-10;
   }
 
-  .section-fade-in {
-    opacity: 0;
-    transform: translateY(20px);
-    transition: opacity 0.6s ease-out, transform 0.6s ease-out;
-  }
-
-  .section-fade-in.visible {
+  /* Remove the section-fade-in animation dependency */
+  .section {
     opacity: 1;
     transform: translateY(0);
   }
